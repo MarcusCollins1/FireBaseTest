@@ -35,4 +35,21 @@ document.getElementById("form").addEventListener("submit", async (e) => {
 
     e.target.reset()
     alert("Saved!");
-})
+});
+
+document.getElementById("loadMessages").addEventListener("click", loadMessages);
+
+async function loadMessages() {
+    const list = document.getElementById("messages");
+    list.innerHTML = "";
+
+    const q = quer(collection(db, "messages"), orderby("createdAt", "desc"));
+    const snapshot = await getDocs(q);
+
+    snapshot.forEach((doc) => {
+        const data = doc.data();
+        const li = document.createElement("li");
+        li.textContent = `${data.name}:${data.message}`;
+        list.appendChild(li);
+    });
+}
