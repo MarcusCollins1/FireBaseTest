@@ -24,20 +24,22 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const analytics = getAnalytics(app)
 
-document.getElementById("form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const name = document.getElementById("name").value;
-    const message = document.getElementById("message").value;
+document.getElementById("submitBtn").addEventListener("click", async () => {
+    const nameEntry = document.getElementById("name");
+    const messageEntry = document.getElementById("message");
+    const name = nameEntry.value;
+    const message = messageEntry.value;
 
     await addDoc(collection(db, "messages"), {
         name,
         message,
         createdAt: serverTimestamp()
     });
-
-    e.target.reset()
-    alert("Saved!");
+    
+    nameEntry.value = "";
+    messageEntry.value = "";
+    
+    alert("Saved!")
 });
 
 document.getElementById("loadMessages").addEventListener("click", loadMessages);
