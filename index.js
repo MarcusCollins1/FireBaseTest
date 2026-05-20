@@ -43,7 +43,7 @@ async function loadMessages() {
     const list = document.getElementById("messages");
     list.innerHTML = "";
 
-    const q = quer(collection(db, "messages"), orderby("createdAt", "desc"));
+    const q = query(collection(db, "messages"), orderby("createdAt", "desc"));
     const snapshot = await getDocs(q);
 
     snapshot.forEach((doc) => {
