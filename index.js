@@ -5,6 +5,8 @@ import {
     query,
     orderBy,
     getDocs,
+    deleteDoc,
+    doc,
     addDoc,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
@@ -38,7 +40,7 @@ document.getElementById("submitBtn").addEventListener("click", async () => {
     
     nameEntry.value = "";
     messageEntry.value = "";
-    
+
     alert("Saved!")
 });
 
@@ -51,10 +53,22 @@ async function loadMessages() {
     const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
     const snapshot = await getDocs(q);
 
-    snapshot.forEach((doc) => {
-        const data = doc.data();
+    snapshot.forEach((documentSnapshot) => {
+        const data = documentSnapshot.data();
         const li = document.createElement("li");
         li.textContent = `${data.name}:${data.message}`;
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "X";
+        deleteBtn.classList.add("delete-button");
+        deleteBtn.onclick = async () => {
+            await deleteDoc(
+                doc(db, "messages", documentSnapshot.id)
+            );
+            loadMessages();
+        }
+
+        li.appendChild(deleteBtn);
         list.appendChild(li);
     });
 }
