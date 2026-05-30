@@ -3,4 +3,8 @@
     border-radius: 6px;
     background-color: red;
     color: black;
+    cursor: pointer;
+}
+.delete-button:hover {
+    background-color: rgb(146, 13, 13);
 }
